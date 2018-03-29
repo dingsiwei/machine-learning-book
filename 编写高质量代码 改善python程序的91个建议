@@ -1,0 +1,103 @@
+编写高质量代码 改善python程序的91个建议
+统一缩进风格，不要混用Tab 和 空格键
+'', "", """, [, ],  , 使用转义符号\
+看库文档的时候学习别人怎么写文档注释
+通过适当添加空行使代码布局更为优雅、合理
+编写函数的4个原则：
+  a.函数设计要尽量短小，嵌套层次不宜过深
+  b.函数申明应该做到合理、简单、易于使用，函数名通俗易懂，小写
+  c.一个函数只做一件事，尽量保证函数语句粒度的一致性
+  
+多使用assert断言
+数据交换值的时候不推荐使用中间变量
+    x, y = y, x
+    耗费内存时间较少，理解：一般的python代码是左到右的顺序，在数据交换的时候是右到左的顺序
+充分利用lazy evaluation的特性
+    if x or y:  # 如果x是True的概率比y大，将x放在前面
+    
+type(a) / isinstance(a, str)
+
+i = 1
+while i != 1.5:
+    i += .1
+    print(i)
+会print无限次，浮点数的存储规则决定了不是所有的浮点数都能准确表达
+对于while中使用i！=1.5的这种条件表达式要避免，浮点数的比较最好要指明精度
+
+不推荐使用eval，用ast.literal_eval替代
+
+enumerate(iterable sequence, start=0)
+
+python3中没有{}.iteritems()
+
+== & is (object)
+
+python3中字符串有两种形式：str unicode，
+str bytes互相转换
+a = 'test'
+ba = bytes(a, encoding='utf8')
+sba = str(ba, encoding='utf8')
+
+absolute import & relative import 从当前环境下查看有没有这个模块，没有在向上一级查找
+python在初始化运行环境的时候会预先加载一批内建模块到内存中
+import sys
+sys.modules.items()
+dir() 函数不带参数时，返回当前范围内的变量、方法和定义的类型列表；带参数时，返回参数的属性、方法列表
+避免循环嵌套导入模块
+
+读入数据使用with自动关闭资源，以免忘记关闭
+
+连接字符串应该优先使用join而不是+
+
+格式化字符串format
+
+使用logging记录日志信息
+
+GIL全局解释器锁Global Interpreter Lock
+保证任何情况下虚拟机中只会有一个线程被运行，而其他线程都处于等待GIL锁被释放的状态，保证对虚拟机内部共享资源访问的互斥性
+对于多核CPU，多线程不能真正发挥优势，甚至在频繁I/O操作的情况下由于多次释放和申请，效率反而会下降，但是大大简化了python线程中共享资源的管理
+
+使用多进程multiprocessing模块绕过GIL的局限，充分利用物理内核的计算能力
+
+对象的管理与垃圾回收
+python中内存管理的方式：
+python使用引用计数器（Reference counting）的方法来管理内存中的对象
+当其他对象引用该对象时，其引用计数会增加1
+删除一个对当前对象的引用时，其引用计数减少1
+缺陷：引用计数器无法解决循环引用的问题，此时会出现内存泄漏
+解决办法：
+import gc
+gc.collect()  # 显式回收内存垃圾
+gc.get_threshold()  # 当对象数量超过threshold的时候自动回收
+gc.garbage
+
+掌握循环优化的基本技巧：
+    1.较少循环内部的计算
+    for i in range(10):
+        d = math.sqrt(y)
+        j += i*d
+    2.在循环中尽量引用局部变量，在命名空间中局部变量优先搜索
+    3.关注内层嵌套循环
+        在多层嵌套循环中，重点关注内层嵌套循环，尽量将内层循环的计算往上移，使用临时变量替代而不是每次都重新计算
+        for i in range(len(v1)):
+            for j in range(len(v2)):
+                x = v1[i] + v2[j]
+                
+         for i in range(len(v1)):
+             v1i = v1[i]
+             for j in range(len(v2)):
+                 x = v1i + v2[j]
+
+yield & return difference
+yield:当需要在循环的过程中依次处理一个序列中的元素的时候
+当解释器执行遇到yield的时候，函数会自动返回yield语句之后的表达式的值，
+与return不同的是yield语句在返回的同时会保存所有的局部变量以及现场信息，
+以便迭代器调用next()，而不是像return语句直接交给垃圾回收器
+
+
+
+
+
+
+
+
