@@ -1,0 +1,48 @@
+%qucikref 查看所有关于ipython的文档
+
+
+1. IPython里面的super和类里面的super是什么意思
+	查看super?文档
+2. 查看所有的魔法命令 %lsmagic
+3. _, __, ___, _i, _ii, _iii的作用
+4. tab查看变量属性和方法，查看私有变量，os._ + TAB，保护变量__XXX__
+5. %run： 在ipython环境中使用%run执行py文件
+   %time 单次执行时间 == %run -t
+   %timeit 多次执行时间
+   In [7]: %timeit -n 10 -r 5 [x*x for x in range(1000)]
+	70.6 µs ± 1.14 µs per loop (mean ± std. dev. of 5 runs, 10 loops each)
+
+   %debug u d + enter啥意思 
+   		  ? show lists of all the available commons in the debugger
+   %pdb 
+   %pylab  启动ipython的时候加入参数。ipython --pylab 集成matplotlib
+6. ipython notebook
+	enter
+	ctrl + enter
+	alt + enter
+	shift + enter
+	ctrl + M then H
+   %alias & %store
+   %bookmark 
+   %history --> alias %hist
+   %hist -o with output
+   		 -n with index number
+   		 -p with >>> prefix
+   		 -f save 
+   %paste %cpaste
+   %xdel
+   %logstart
+   %run & %edit
+   	%run -p == %prun
+   %psource
+   %pfile
+   %pdoc
+   %pdef
+
+7. high performance computation
+	difference between numpy and python loop
+	* loop in Numpy is executed by C not Python, so there is no longer the cost of interpretation within the loop
+	* Python being an interpertation, dtynamically-typed language, each iteration involves various low-level operations performed by Python(type checking and so on). Those operations generally take negligible time, but they become noxious to performance when they repeated million of times
+	In addition, modern CPUs implement vectorized instructions	
+	void python loop, instead using vectorized computations
+	multimensional array
